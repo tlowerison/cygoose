@@ -1,0 +1,13 @@
+# dependencies
+**/node_modules
+
+# misc
+**/.DS_Store
+**/.npmignore
+**/.npmrc
+**/cache
+**/dist
+**/npm-debug.log*
+**/releases
+**/yarn-debug.log*
+**/yarn-error.log*
