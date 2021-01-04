@@ -57,10 +57,10 @@ Usage: cygoose <command> [options]
 
 Commands:
   cygoose init <project-name> <migrations-path>  create a new project
-  cygoose set [project-name]                     set configurations for a project
   cygoose ls                                     list all projects by name
-  cygoose describe <project-name>                list all config settings
   cygoose rm <project-name>                      remove the cache
+  cygoose <project-name> set                     set configurations for a project
+  cygoose <project-name> describe                list all config settings
   cygoose <project-name> up                      migrate the DB to the most recent version available
   cygoose <project-name> up-by-one               migrate up by a single version
   cygoose <project-name> up-to [version]         migrate the DB to a specific version
