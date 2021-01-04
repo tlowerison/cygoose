@@ -29,6 +29,9 @@ export const readCacheIndex = async () => {
 
 export const readFromCacheIndex = async (projectName: string) => {
   const findings = await findConfig(projectName);
+  if (findings.config === null) {
+    return null;
+  }
   const envVars = await getEnvVars(findings.config?.envFile);
   return { ...envVars, ...findings.config } as Config;
 };
@@ -152,7 +155,7 @@ const stringifyCacheLine = ({
     projectName,
     projectRoot,
     migrationsPath,
-    envFile ? join(process.cwd(), envFile) : "",
+    envFile ? (envFile[0] !== "/" ? join(process.cwd(), envFile) : envFile) : "",
     neo4jAddress || "",
     neo4jDatabase || "",
     neo4jUsername || "",

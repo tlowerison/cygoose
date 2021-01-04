@@ -57,14 +57,14 @@ import { getEnvVars, toPrettyFormat } from "./constants";
     }
   }
 
-  let config = await readFromCacheIndex(argv.projectName);
-  if (!config) {
+  const preConfig = await readFromCacheIndex(argv.projectName);
+  if (!preConfig) {
     console.log(`no project found with name '${argv.projectName}"`);
     return;
   }
 
-  const envVars = await getEnvVars(argv.envFile || config.envFile);
-  config = { ...envVars, ...config };
+  const envVars = await getEnvVars(argv.envFile || preConfig.envFile);
+  const config = { ...envVars, ...preConfig };
 
   const appliedMigrations = await getAppliedMigrations(config);
   const origin = appliedMigrations.map(({ name }) => name);

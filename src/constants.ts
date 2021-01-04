@@ -2,7 +2,7 @@ import childProcess from "child_process";
 import { join } from "path";
 import { fromPairs, has, toPairs } from "ramda";
 
-export const cacheDirRoot = "~"
+export const cacheDirRoot = "~";
 export const cacheDirName = ".cygoose";
 export const cacheDirPath = join("~", cacheDirName);
 
@@ -13,7 +13,13 @@ export const exec = (command: string): Promise<string> => new Promise((resolve, 
 
 export const getEnvVars = async (envFile: string | undefined) => {
   if (!envFile) return {};
-  const lines = (await readFile(envFile)).split("\n");
+  let lines: string[] = [];
+  try {
+    lines = (await readFile(envFile)).split("\n");
+  } catch (error) {
+    console.log(error.message);
+    return {};
+  }
   const values = {};
   for (let i = 0; i < lines.length - 1; i += 1) {
     const [key, ...value] = lines[i].split("=");
