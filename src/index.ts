@@ -219,7 +219,8 @@ import { getEnvVars, toPrettyFormat } from "./constants";
       return;
     }
     case "down": {
-      const migrationNames = origin.slice(origin.length - 1);
+      const migrations = appliedMigrations.slice(appliedMigrations.length - 1);
+      const migrationNames = migrations.map(({ name }) => name);
       if (migrationNames.length === 0) {
         console.log("up to date");
       } else if (argv.dryRun) {
@@ -227,7 +228,6 @@ import { getEnvVars, toPrettyFormat } from "./constants";
           console.log(`Would rollback ${migrationNames[i]}`);
         }
       } else {
-        const migrations = appliedMigrations;
         for (let i = migrationNames.length - 1; i >= 0; i -= 1) {
           const name = migrationNames[i];
           const migration = migrations[i];
@@ -245,13 +245,14 @@ import { getEnvVars, toPrettyFormat } from "./constants";
       return;
     }
     case "down-to": {
-      let migrationNames = origin;
-      migrationNames = migrationNames.slice(
-        migrationNames.indexOf(argv.version) !== -1
-          ? migrationNames.indexOf(argv.version)
+      let migrations = appliedMigrations;
+      migrations = migrations.slice(
+        migrations.findIndex(({ name }) => name === argv.version) !== -1
+          ? migrations.findIndex(({ name }) => name === argv.version)
           : 0,
-        migrationNames.length,
+        migrations.length,
       );
+      const migrationNames = migrations.map(({ name }) => name);
       if (!migrationNames.includes(argv.version) && !unapplied.includes(argv.version)) {
         console.error(`${argv.version} is not a known migration to apply down to`);
       } else if (migrationNames.length === 0 || unapplied.includes(argv.version)) {
@@ -304,7 +305,8 @@ import { getEnvVars, toPrettyFormat } from "./constants";
       return;
     }
     case "reset": {
-      const migrationNames = origin;
+      const migrations = appliedMigrations;
+      const migrationNames = migrations.map(({ name }) => name);
       if (migrationNames.length === 0) {
         console.log("up to date");
       } else if (argv.dryRun) {
@@ -312,7 +314,6 @@ import { getEnvVars, toPrettyFormat } from "./constants";
           console.log(`Would rollback ${migrationNames[i]}`);
         }
       } else {
-        const migrations = appliedMigrations;
         for (let i = migrationNames.length - 1; i >= 0; i -= 1) {
           const name = migrationNames[i];
           const migration = migrations[i];

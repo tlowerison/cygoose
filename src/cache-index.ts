@@ -152,7 +152,7 @@ const stringifyCacheLine = ({
     projectName,
     projectRoot,
     migrationsPath,
-    envFile || "",
+    envFile ? join(process.cwd(), envFile) : "",
     neo4jAddress || "",
     neo4jDatabase || "",
     neo4jUsername || "",
