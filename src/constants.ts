@@ -1,11 +1,10 @@
 import childProcess from "child_process";
 import { join } from "path";
 import { fromPairs, has, toPairs } from "ramda";
-import { readFileSync } from "fs";
 
-export const cacheDirRoot = JSON.parse(readFileSync(join(__dirname, "..", "package.json")).toString().trim()).installation;
-export const cacheDirName = "cygoose/cache";
-export const cacheDirPath = `${cacheDirRoot}/${cacheDirName}`;
+export const cacheDirRoot = "~"
+export const cacheDirName = ".cygoose";
+export const cacheDirPath = join("~", cacheDirName);
 
 export const exec = (command: string): Promise<string> => new Promise((resolve, reject) => childProcess.exec(
   command,

@@ -24,7 +24,7 @@ const separator = ";";
 
 export const readCacheIndex = async () => {
   const file = await getIndexFile();
-  return file.split("\n").map(parseCacheLine);
+  return file.split("\n").map(line => line.trim()).filter(line => line !== "").map(parseCacheLine);
 };
 
 export const readFromCacheIndex = async (projectName: string) => {
@@ -96,14 +96,10 @@ const getIndexFile = async () => {
         .split("\n")
         .map(e => e.trim());
       if (!dirs.includes(elements[i])) {
-        try {
-          await mkdir(join(cacheDirRoot, ...elements.slice(0, i + 1)));
-        } catch (error) {
-          console.error(error.message);
-          return "";
-        }
+        await mkdir(join(cacheDirRoot, ...elements.slice(0, i + 1)));
       }
     }
+
     await writeFile(indexFilePath, "");
     return "";
   }

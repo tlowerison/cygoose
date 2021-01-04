@@ -31,7 +31,6 @@ import { getEnvVars, toPrettyFormat } from "./constants";
         console.log(`${config.projectName}`);
         console.log(` - project-root: ${config.projectRoot}`);
         console.log(` - migrations-path: ${config.migrationsPath}`);
-        console.log();
       }
       return;
     }
