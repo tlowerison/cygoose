@@ -15,12 +15,13 @@ REMOVE n:UserGroup
 ```
 Migration filenames MUST follow the pattern `prefix_suffix.cypher` with the `_` being the important thing to note. Migration files can be nested within your migration directory and will be applied in alphabetical order by relative filepath to your migration directory.
 
-### Set Up
+### Install
 To install `cygoose`, run the command below (replace `<release>` with the url for one of the releases, e.g. `https://github.com/tlowerison/cygoose/releases/download/v1.0.0/cygoose-macos`)
 ```
 wget -O /usr/local/bin/cygoose '<release>' && chmod u+x /usr/local/bin/cygoose
 ```
 
+### Usage
 Setting up a project looks like this
 ```
 cd path/to/project/root
