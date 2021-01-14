@@ -16,9 +16,13 @@ REMOVE n:UserGroup
 Migration filenames MUST follow the pattern `prefix_suffix.cypher` with the `_` being the important thing to note. Migration files can be nested within your migration directory and will be applied in alphabetical order by relative filepath to your migration directory.
 
 ### Install
-To install `cygoose`, run the command below (replace `<release>` with the url for one of the releases, e.g. `https://github.com/tlowerison/cygoose/releases/download/v1.0.0/cygoose-macos`)
+To install `cygoose` on Mac, run the command below
 ```
-wget -O /usr/local/bin/cygoose '<release>' && chmod u+x /usr/local/bin/cygoose
+wget -O /usr/local/bin/cygoose https://github.com/tlowerison/cygoose/releases/download/v1.0.0/cygoose-macos && chmod u+x /usr/local/bin/cygoose
+```
+Likewise, to install `cygoose` on Linux, run
+```
+wget -O /usr/local/bin/cygoose https://github.com/tlowerison/cygoose/releases/download/v1.0.0/cygoose-linux && chmod u+x /usr/local/bin/cygoose
 ```
 
 ### Usage
@@ -50,7 +54,7 @@ cygoose rm project_name
 One thing to note is that cygoose reserves the `;` character for indexing so you shouldn't include it in any project names, file paths or other settings.
 
 ### k8s integration
-cygoose also integrates with Kubernetes, allowing you to specify a desired context and a Neo4j PVC pod to run migrations on (have only tested with the community edition deployed using Helm so far). Use the `--k8s-context` and `--k8s-pod` options when running `cygoose init/set` or, alternatively, specify a path to a `.env` file containing the `K8S_CONTEXT` and `K8S_POD` variables with the `-e` option.
+cygoose also integrates with Kubernetes, allowing you to specify a desired context and a Neo4j pod to run migrations on (have only tested with the community edition deployed using Helm so far). Use the `--k8s-context` and `--k8s-pod` options when running `cygoose init/set` or, alternatively, specify a path to a `.env` file containing the `K8S_CONTEXT` and `K8S_POD` variables with the `-e` option.
 
 ### cygoose --help
 ```
