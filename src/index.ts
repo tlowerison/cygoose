@@ -64,7 +64,7 @@ import { getEnvVars, toPrettyFormat } from "./constants";
   }
 
   const envVars = await getEnvVars(argv.envFile || preConfig.envFile);
-  const config = { ...envVars, ...preConfig };
+  const config = { ...envVars, ...preConfig, ...argv };
 
   const appliedMigrations = await getAppliedMigrations(config);
   const origin = appliedMigrations.map(({ name }) => name);

@@ -1,6 +1,6 @@
 {
   "name": "cygoose",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Migrations manager for Neo4j databases",
   "author": "",
   "license": "ISC",
