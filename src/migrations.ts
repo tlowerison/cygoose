@@ -103,8 +103,18 @@ const getMigrationFromText = (text: string): { up: string; down: string } => {
   return map(lineNums => lineNums.map(lineNum => lines[lineNum]).join("\n").trim(), lineStates);
 };
 
+const toStatements = (cypher: string) => cypher
+  .split(`"`)
+  .join(`\\"`)
+  .split(`$`)
+  .join(`\\$`)
+  .split(";")
+  .map(e => e.trim())
+  .filter(e => e.length > 0);
+
 export const execCypher = async (
-  cypher: string,
+  migration: { down: string; up: string },
+  direction: "down" | "up",
   {
     k8sContext,
     k8sNamespace,
@@ -119,25 +129,56 @@ export const execCypher = async (
     console.error("must provide password parameter");
     throw new Error("");
   }
-  const operation = `cypher-shell ${
-    neo4jAddress ? `-a '${neo4jAddress.split(`'`).join(`\\'`)}'` : ""
-  }${
-    neo4jDatabase ? ` -d '${neo4jDatabase.split(`'`).join(`\\'`)}'` : ""
-  }${
-    neo4jUsername ? ` -u '${neo4jUsername.split(`'`).join(`\\'`)}'` : ""
-  }${
-    neo4jPassword ? ` -p '${neo4jPassword.split(`'`).join(`\\'`)}'` : ""
-  } "${
-    cypher.split(`"`).join(`\\"`).split(`$`).join(`\\$`)
-  }"`;
+
+  const toOperations = (statements: string[]) => statements.map(
+    statement => `cypher-shell ${
+      neo4jAddress ? `-a '${neo4jAddress.split(`'`).join(`\\'`)}'` : ""
+    }${
+      neo4jDatabase ? ` -d '${neo4jDatabase.split(`'`).join(`\\'`)}'` : ""
+    }${
+      neo4jUsername ? ` -u '${neo4jUsername.split(`'`).join(`\\'`)}'` : ""
+    }${
+      neo4jPassword ? ` -p '${neo4jPassword.split(`'`).join(`\\'`)}'` : ""
+    } "${
+      statement
+    }"`
+  );
+
+  const forwardStatements = toStatements(migration[direction]);
+  const forwardOperations = toOperations(forwardStatements);
+  const reverseStatements = toStatements(migration[direction === "up" ? "down" : "up"]);
+  const reverseOperations = toOperations(reverseStatements);
+
   if (k8sContext && k8sNamespace && k8sPod) {
     const currentK8sContext = await exec(`kubectl config current-context`);
     if (currentK8sContext !== k8sContext) {
       await exec(`kubectl config use-context ${k8sContext}`);
     }
-    await exec(`kubectl exec ${k8sPod} --namespace ${k8sNamespace} -- ./bin/${operation}`);
+    let i = 0;
+    try {
+      for (i = 0; i < forwardOperations.length; i += 1) {
+        const operation = forwardOperations[i];
+        await exec(`kubectl exec ${k8sPod} --namespace ${k8sNamespace} -- ./bin/${operation}`);
+      }
+    } catch (error) {
+      for (let j = i + 1; j >= 0; j -= 1) {
+        const operation = reverseOperations[j];
+        await exec(`kubectl exec ${k8sPod} --namespace ${k8sNamespace} -- ./bin/${operation}`);
+      }
+    }
   } else {
-    await exec(operation);
+  let i = 0;
+  try {
+    for (i = 0; i < forwardOperations.length; i += 1) {
+      const operation = forwardOperations[i];
+      await exec(operation);
+    }
+  } catch (error) {
+    for (let j = i + 1; j >= 0; j -= 1) {
+      const operation = reverseOperations[j];
+      await exec(operation);
+    }
+  }
   }
 };
 

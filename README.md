@@ -52,7 +52,39 @@ If you want to remove the cygoose cache for this project, run this while inside 
 cygoose rm project_name
 ```
 
-One thing to note is that cygoose reserves the `;` character for indexing so you shouldn't include it in any project names, file paths or other settings.
+### Nuances
+- cygoose reserves the `;` character for indexing so you shouldn't include it in any project names, file paths or other settings.
+- `cypher-shell` can only execute one Cypher statement at a time, so combining multiple statements into one migration means that each statement will be executed independently and sequentially. This is kind of a major bummer because it kills any notion of a transaction across these separate statements, but it's not an issue as long as we order the statements in our migrations correctly. Basically if you have an up migration that looks like this (note the syntax error in the second statement):
+```cypher
+// +cygoose Up
+MATCH (n { uuid: '123' })
+SET n.name = 'Foo';
+
+MATCH (n { uuid: 'abc' })
+SET n.name = 'Alice';
+
+MATCH (n { uuid: 'def' })
+SET n.name 'Bob';
+
+MATCH (n { uuid: 'ghi' })
+SET n.name = 'Eve';
+```
+We should add down migration statements in the opposite order so that we can fail gracefully (to a degree) and undo partial edits.
+```cypher
+// +cygoose Down
+MATCH (n { uuid: 'ghi' })
+SET n.name = 'ghi';
+
+MATCH (n { uuid: 'def' })
+SET n.name = 'def';
+
+MATCH (n { uuid: 'abc' })
+SET n.name = 'abc';
+
+MATCH (n { uuid: '123' })
+SET n.name = '123';
+```
+When the second up statement fails, `cygoose` will rollback the up statement by picking up from the third down statement and executing all remaining down statements (i.e. the 3rd and 4th down statements).
 
 ### k8s integration
 cygoose also integrates with Kubernetes, allowing you to specify a desired context and a Neo4j pod to run migrations on (have only tested with the community edition deployed using Helm so far). Use the `--k8s-context` and `--k8s-pod` options when running `cygoose init/set` or, alternatively, specify a path to a `.env` file containing the `K8S_CONTEXT` and `K8S_POD` variables with the `-e` option.

@@ -146,7 +146,7 @@ import { getEnvVars, toPrettyFormat } from "./constants";
           const migration = migrations[i];
           process.stdout.write(`Applying ${name}... `);
           try {
-            await execCypher(migration.up, config);
+            await execCypher(migration, "up", config);
           } catch (error) {
             console.log();
             console.error(error.message);
@@ -173,7 +173,7 @@ import { getEnvVars, toPrettyFormat } from "./constants";
           const migration = migrations[i];
           process.stdout.write(`Applying ${name}... `);
           try {
-            await execCypher(migration.up, config);
+            await execCypher(migration, "up", config);
           } catch (error) {
             console.log();
             console.error(error.message);
@@ -207,7 +207,7 @@ import { getEnvVars, toPrettyFormat } from "./constants";
           const migration = migrations[i];
           process.stdout.write(`Applying ${name}... `);
           try {
-            await execCypher(migration.up, config);
+            await execCypher(migration, "up", config);
           } catch (error) {
             console.log();
             console.error(error.message);
@@ -233,7 +233,7 @@ import { getEnvVars, toPrettyFormat } from "./constants";
           const migration = migrations[i];
           process.stdout.write(`Rolling back ${name}... `);
           try {
-            await execCypher(migration.down, config);
+            await execCypher(migration, "down", config);
           } catch (error) {
             console.log();
             console.error(error.message);
@@ -268,7 +268,7 @@ import { getEnvVars, toPrettyFormat } from "./constants";
           const migration = migrations[i];
           process.stdout.write(`Rolling back ${name}... `);
           try {
-            await execCypher(migration.down, config);
+            await execCypher(migration, "down", config);
           } catch (error) {
             console.log();
             console.error(error.message);
@@ -294,7 +294,7 @@ import { getEnvVars, toPrettyFormat } from "./constants";
           const migration = migrations[i];
           process.stdout.write(`Applying ${name}... `);
           try {
-            await execCypher(migration.up, config);
+            await execCypher(migration, "up", config);
           } catch (error) {
             console.log();
             console.error(error.message);
@@ -319,7 +319,7 @@ import { getEnvVars, toPrettyFormat } from "./constants";
           const migration = migrations[i];
           process.stdout.write(`Rolling back ${name}... `);
           try {
-            await execCypher(migration.down, config);
+            await execCypher(migration, "down", config);
           } catch (error) {
             console.log();
             console.error(error.message);
