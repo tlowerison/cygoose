@@ -18,11 +18,11 @@ Migration filenames MUST follow the pattern `prefix_suffix.cypher` with the `_` 
 ### Install
 To install `cygoose` on Mac, run the command below
 ```
-wget -O /usr/local/bin/cygoose https://github.com/tlowerison/cygoose/releases/download/v1.0.0/cygoose-macos && chmod u+x /usr/local/bin/cygoose
+wget -O /usr/local/bin/cygoose https://github.com/tlowerison/cygoose/releases/download/v1.0.1/cygoose-macos && chmod u+x /usr/local/bin/cygoose
 ```
 Likewise, to install `cygoose` on Linux, run
 ```
-wget -O /usr/local/bin/cygoose https://github.com/tlowerison/cygoose/releases/download/v1.0.0/cygoose-linux && chmod u+x /usr/local/bin/cygoose
+wget -O /usr/local/bin/cygoose https://github.com/tlowerison/cygoose/releases/download/v1.0.1/cygoose-linux && chmod u+x /usr/local/bin/cygoose
 ```
 
 ### Usage
