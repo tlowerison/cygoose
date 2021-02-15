@@ -121,13 +121,13 @@ export const execCypher = async (
   }
   const operation = `cypher-shell ${
     neo4jAddress ? `-a '${neo4jAddress.split(`'`).join(`\\'`)}'` : ""
-  } ${
-    neo4jDatabase ? `-d '${neo4jDatabase.split(`'`).join(`\\'`)}'` : ""
-  } -u '${
-    neo4jUsername.split(`'`).join(`\\'`)
-  }' -p '${
-    neo4jPassword.split(`'`).join(`\\'`)
-  }' "${
+  }${
+    neo4jDatabase ? ` -d '${neo4jDatabase.split(`'`).join(`\\'`)}'` : ""
+  }${
+    neo4jUsername ? ` -u '${neo4jUsername.split(`'`).join(`\\'`)}'` : ""
+  }${
+    neo4jPassword ? ` -p '${neo4jPassword.split(`'`).join(`\\'`)}'` : ""
+  } "${
     cypher.split(`"`).join(`\\"`).split(`$`).join(`\\$`)
   }"`;
   if (k8sContext && k8sNamespace && k8sPod) {

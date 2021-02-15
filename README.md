@@ -16,6 +16,7 @@ REMOVE n:UserGroup
 Migration filenames MUST follow the pattern `prefix_suffix.cypher` with the `_` being the important thing to note. Migration files can be nested within your migration directory and will be applied in alphabetical order by relative filepath to your migration directory.
 
 ### Install
+First install `cypher-shell` on your machine from either the [Neo4j download center](https://neo4j.com/download-center/#cyphershell) or using `brew install cypher-shell`. (Note: `cypher-shell` requires a Java Runtime to be installed as well, downloads can be found at the [Java download center](https://www.java.com/en/download/manual.jsp)).
 To install `cygoose` on Mac, run the command below
 ```
 wget -O /usr/local/bin/cygoose https://github.com/tlowerison/cygoose/releases/download/v1.0.1/cygoose-macos && chmod u+x /usr/local/bin/cygoose
