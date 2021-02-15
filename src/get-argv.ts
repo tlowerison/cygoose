@@ -85,21 +85,25 @@ export const getArgv = async () => {
 };
 
 const includeMissingOption = (yargs: Argv) => yargs.option("include-missing", {
+  alias: "i",
   describe: "include migrations that were missed",
   type: "boolean",
 });
 
 const dryRunOption = (yargs: Argv) => yargs.option("dry-run", {
+  alias: "d",
   describe: "prints out the migrations it would apply and exits before applying them",
   type: "boolean",
 });
 
 const showMissingOnlyOption = (yargs: Argv) => migrationOptions(yargs.option("show-missing-only", {
+  alias: "smo",
   describe: "show only migrations that were applied but no longer exist in migrations path",
   type: "boolean",
 }));
 
 const versionPositional = (yargs: Argv) => yargs.positional("version", {
+  alias: "v",
   describe: "filename of a specific migration",
   type: "string",
 });
@@ -114,7 +118,7 @@ const initAndSetOptions = (isInitCommand: boolean) => (yargs: Argv) => {
     });
   }
   appliedYargs = appliedYargs.option("env-file", {
-    inputs: "e",
+    alias: "e",
     describe: "specify a file with Neo4j environment variables",
     type: "string",
   });
@@ -186,29 +190,35 @@ const migrationOptions = (yargs: Argv) =>
       type: "boolean",
     })
     .option("format", {
+      alias: "f",
       describe: "desired output format",
       choices: ["auto", "verbose", "plain"],
     })
     .option("debug", {
+      alias: "d",
       describe: "print additional debug information",
       type: "boolean",
     })
     .option("non-interactive", {
+      alias: "n",
       describe: "force non-interactive mode; only useful if auto-detection fails (e.g. Windows)",
       type: "boolean",
     })
     .option("encryption", {
+      alias: "e",
       describe: "whether the connection to Neo4j should be encrypted; must be consistent with Neo4j’s configuration",
       choices: ["true", "false", "default"],
       coerce: (value: "true" | "false" | "default"): boolean | "default" => value === "default" ? value : JSON.parse(value),
       default: "default",
     })
     .option("sample-rows", {
+      alias: "s",
       describe: "number of rows sampled to compute table widths (only for format=verbose)",
       type: "number",
       default: 1000,
     })
     .option("wrap", {
+      alias: "w",
       describe: "wrap table column values if column is too narrow (only for format=verbose)",
       type: "boolean",
       default: true,
@@ -238,7 +248,7 @@ const aliases: Alias[] = [
   {
     output: "envFile",
     inputs: [
-      { key: "env-path" },
+      { key: "env-file" },
       { key: "e" },
     ],
   },
@@ -258,6 +268,7 @@ const aliases: Alias[] = [
     output: "includeMissing",
     inputs: [
       { key: "include-missing" },
+      { key: "i" },
     ],
   },
   {
@@ -320,11 +331,13 @@ const aliases: Alias[] = [
     output: "nonInteractive",
     inputs: [
       { key: "non-interactive" },
+      { key: "n" },
     ],
   },
   {
     output: "param",
     inputs: [
+      { key: "param" },
       { key: "P" },
     ],
   },
@@ -338,12 +351,14 @@ const aliases: Alias[] = [
     output: "sampleRows",
     inputs: [
       { key: "sample-rows" },
+      { key: "s" },
     ],
   },
   {
     output: "showMissingOnly",
     inputs: [
       { key: "show-missing-only" },
+      { key: "smo" },
     ],
   },
 ];
