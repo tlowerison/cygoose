@@ -59,7 +59,7 @@ import { getEnvVars, toPrettyFormat } from "./constants";
 
   const preConfig = await readFromCacheIndex(argv.projectName);
   if (!preConfig) {
-    console.log(`no project found with name '${argv.projectName}"`);
+    console.log(`no project found with name "${argv.projectName || ""}"`);
     return;
   }
 

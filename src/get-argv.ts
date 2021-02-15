@@ -17,24 +17,26 @@ export const getArgv = async () => {
   let appliedYargs = yargs(process.argv.slice(2));
   let argv = appliedYargs
     .scriptName("cygoose")
-    .version("1.0.0")
+    .version("1.0.1")
     .wrap(appliedYargs.terminalWidth())
     .usage("Usage: $0 <command> [options]")
     .command("init <project-name> <migrations-path>", "create a new project", initAndSetOptions(true))
     .command("ls", "list all projects by name")
     .command("rm <project-name>", "remove the cache")
-    .command("<project-name> set", "set configurations for a project", initAndSetOptions(false))
-    .command("<project-name> describe", "list all config settings")
-    .command("<project-name> up", "migrate the DB to the most recent version available", pipe(dryRunOption, includeMissingOption, migrationOptions))
-    .command("<project-name> up-by-one", "migrate up by a single version", pipe(dryRunOption, migrationOptions))
-    .command("<project-name> up-to [version]", "migrate the DB to a specific version", pipe(versionPositional, dryRunOption, includeMissingOption, migrationOptions))
-    .command("<project-name> down", "rollback the version by 1", pipe(dryRunOption, migrationOptions))
-    .command("<project-name> down-to [version]", "rollback to a specific version", pipe(versionPositional, dryRunOption, includeMissingOption, migrationOptions))
-    .command("<project-name> redo", "re-run the latest migration", pipe(dryRunOption, migrationOptions))
-    .command("<project-name> reset", "rollback all migrations", pipe(dryRunOption, includeMissingOption, migrationOptions))
-    .command("<project-name> status", "dump the migration status for the current DB", pipe(showMissingOnlyOption, migrationOptions))
-    .command("<project-name> version", "print the name of the most recent applied migration", migrationOptions)
-    .help()
+    .command("set <project-name>", "set configurations for a project", initAndSetOptions(false))
+    .command("describe <project-name>", "list all config settings")
+    .command("up <project-name>", "migrate the DB to the most recent version available", pipe(dryRunOption, includeMissingOption, migrationOptions))
+    .command("up-by-one <project-name>", "migrate up by a single version", pipe(dryRunOption, migrationOptions))
+    .command("up-to <project-name> [version]", "migrate the DB to a specific version", pipe(versionPositional, dryRunOption, includeMissingOption, migrationOptions))
+    .command("down <project-name>", "rollback the version by 1", pipe(dryRunOption, migrationOptions))
+    .command("down-to <project-name> [version]", "rollback to a specific version", pipe(versionPositional, dryRunOption, includeMissingOption, migrationOptions))
+    .command("redo <project-name>", "re-run the latest migration", pipe(dryRunOption, migrationOptions))
+    .command("reset <project-name>", "rollback all migrations", pipe(dryRunOption, includeMissingOption, migrationOptions))
+    .command("status <project-name>", "dump the migration status for the current DB", pipe(showMissingOnlyOption, migrationOptions))
+    .command("version <project-name>", "print the name of the most recent applied migration", migrationOptions)
+    .demandCommand(1, "")
+    .alias("h", "help")
+    .help("help")
     .argv as any;
 
   argv = fromPairs(toPairs({
@@ -346,4 +348,19 @@ const aliases: Alias[] = [
   },
 ];
 
-const commands = ["init", "set", "ls", "rm", "describe", "up", "up-by-one", "up-to", "down", "down-to", "redo", "reset",  "status", "version"];
+const commands = [
+  "init",
+  "set",
+  "ls",
+  "rm",
+  "describe",
+  "up",
+  "up-by-one",
+  "up-to",
+  "down",
+  "down-to",
+  "redo",
+  "reset",
+   "status",
+   "version",
+];
